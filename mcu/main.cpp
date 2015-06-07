@@ -27,7 +27,7 @@ int main()
 {
     led_1 = 1;
     bool mpu_ok = mpu_init(MPU_GYRO_FS_250, MPU_ACCEL_FS_2G);
-    bool hmc_ok = hmc.init(HMC_FREQUENCY_100KHZ, 
+    bool hmc_ok = hmc.init(HMC_FREQUENCY_100KHZ,
                            HMC_AVERAGING_SAMPLES_1,
                            HMC_DATA_OUTPUT_RATE_75,
                            HMC_BIAS_NONE,

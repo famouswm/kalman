@@ -60,7 +60,8 @@ const int HMC_BIAS_NEGATIVE            = 0x02;
 
 // These configure the common gain for each axis.
 // The output range of the sensor in each axis is
-// 0xF800 to 0x07FF (-2048, 2047);
+// 0xF800 to 0x07FF (-2048, 2047) (12-bit ADC)
+// The gain is in units Digital value / 1 Gauss.
 const int HMC_GAIN_1370               = 0x00; // 0.73 mG / LSb
 const int HMC_GAIN_1090               = 0x01; // 0.92 mG / LSb
 const int HMC_GAIN_820                = 0x02; // 1.22 mG / LSb
@@ -86,9 +87,9 @@ class HMC5883
 {
 public:
     HMC5883(PinName sda, PinName scl);
-    bool init(int frequency, 
-             int num_averaging_samples, 
-             int data_output_rate, 
+    bool init(int frequency,
+             int num_averaging_samples,
+             int data_output_rate,
              int bias_mode,
              int gain,
              int measurement_mode);
