@@ -21,9 +21,7 @@ gyro
 
 index | dt | n   | description
 ------+----+-----+------------
-    0 | 16 | 100 | IMU lying flat on table.
-    1 | 16 | 500 | Rotate 90 about x, 90 about y, 90 about z
+    0 | 16 | 500 | IMU lying flat on table.
+    1 | 16 | 500 | Rotate 90 about z, 90 about x, 90 about y
     2 | 16 | 500 | Rotate 180 about [1 1 1]
-    3 |    |     |
-    4 |    |     |
-    5 |    |     |
+    3 | 16 | 500 | Rotate 90 about x, 90 about y, 90 about z

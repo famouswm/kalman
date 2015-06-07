@@ -64,6 +64,7 @@ int main(int argc, char **argv)
     int32_t bias_accel_x = 0;
     int32_t bias_accel_y = 0;
     int32_t bias_accel_z = 0;
+    printf("averaging samples...\n");
     while (samples < sample_count)
     {
         char handshake = 0xab;
@@ -79,11 +80,6 @@ int main(int argc, char **argv)
             if (index == sizeof(SensorPacket))
                 index = 0;
         } while (index != 0);
-
-        printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
-               packet.mag_x, packet.mag_y, packet.mag_z,
-               packet.gyro_x, packet.gyro_y, packet.gyro_z,
-               packet.accel_x, packet.accel_y, packet.accel_z);
 
         if (average_samples < average_count)
         {
@@ -117,6 +113,10 @@ int main(int argc, char **argv)
         }
         else
         {
+            printf("%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+                   packet.mag_x, packet.mag_y, packet.mag_z,
+                   packet.gyro_x, packet.gyro_y, packet.gyro_z,
+                   packet.accel_x, packet.accel_y, packet.accel_z);
             float t = samples * (float)(sleep_time) / 1000.0f;
             fprintf(output, "%f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", t,
                     packet.mag_x, packet.mag_y, packet.mag_z,
