@@ -18,10 +18,10 @@ mag_fs = 1.88; % Gauss (2048/1090)
 accel_fs = 2;  % Multiples of g
 gyro_fs = 250; % Degrees / second
 
-samples = length(data) - 1;
+samples = length(data);
 time = data(2:samples, 1);
 
-bias_mag = data(2:4) * mag_fs / mag_range;
+bias_mag = data(1, 2:4) * mag_fs / mag_range;
 mag = data(2:samples, 2:4) * mag_fs / mag_range;
 
 bias_gyro = data(1, 5:7) * gyro_fs / gyro_range;

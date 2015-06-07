@@ -1,4 +1,5 @@
-[time, mag_fs, gyro_fs, accel_fs, bias_mag, mag, bias_gyro, gyro, bias_accel, accel] = load_values('series2.txt');
+series_name = 'series1.txt';
+[time, mag_fs, gyro_fs, accel_fs, bias_mag, mag, bias_gyro, gyro, bias_accel, accel] = load_values(series_name);
 n = time(length(time));
 
 mag_x = mag(:, 1);
@@ -40,9 +41,9 @@ figure(1); clf(1);
 hold all;
 box on;
 grid on;
-plot(time, accel_x - bias_accel_x, 'LineWidth', 2);
-plot(time, accel_y - bias_accel_y, 'LineWidth', 2);
-plot(time, accel_z - bias_accel_z, 'LineWidth', 2);
+plot(time, accel_x, 'LineWidth', 2);
+plot(time, accel_y, 'LineWidth', 2);
+plot(time, accel_z, 'LineWidth', 2);
 xlabel('time (sec)');
 ylabel('a (9.81m/s^2)');
 xlim([0 n]);
@@ -65,7 +66,7 @@ ylim([-gyro_fs gyro_fs]);
 %% ALL
 figure(1); clf(1);
 subplot(3, 3, 1);
-plot(time, accel_x - bias_accel_x, 'Color', [0 0 0], 'LineWidth', 2);
+plot(time, accel_x, 'Color', [0 0 0], 'LineWidth', 2);
 % ylabel('a_x [Gauss]');
 % xlabel('time (sec)');
 grid on;
@@ -73,7 +74,7 @@ xlim([0 n]);
 ylim([-accel_fs accel_fs]);
 
 subplot(3, 3, 2);
-plot(time, accel_y - bias_accel_y, 'Color', [0 0 0], 'LineWidth', 2);
+plot(time, accel_y, 'Color', [0 0 0], 'LineWidth', 2);
 % ylabel('a_y [Gauss]');
 % xlabel('time (sec)');
 grid on;
@@ -81,7 +82,7 @@ xlim([0 n]);
 ylim([-accel_fs accel_fs]);
 
 subplot(3, 3, 3);
-plot(time, accel_z - bias_accel_z, 'Color', [0 0 0], 'LineWidth', 2);
+plot(time, accel_z, 'Color', [0 0 0], 'LineWidth', 2);
 % ylabel('a_z [Gauss]');
 % xlabel('time (sec)');
 grid on;
