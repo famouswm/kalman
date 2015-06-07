@@ -19,18 +19,18 @@ struct SensorPacket
 
 int main(int argc, char **argv)
 {
-    char *port_name   = "COM3";
-    int sleep_time    = 16;
-    char *output_name = "./matlab/out.txt";
-    int sample_count  = 128;
-    int average_samples = 32;
+    char *port_name     = "COM3";
+    int sleep_time      = 16;
+    char *output_name   = "./matlab/out.txt";
+    int sample_count    = 128;
+    int average_count   = 32;
     if (argc == 6)
     {
         port_name = argv[1];
         sleep_time = atoi(argv[2]);
         output_name = argv[3];
         sample_count = atoi(argv[4]);
-        average_samples = atoi(argv[5]);
+        average_count = atoi(argv[5]);
     }
     else
     {
@@ -53,16 +53,16 @@ int main(int argc, char **argv)
 
     int index = 0;
     int samples = 0;
-    sample_count += average_samples;
+    int average_samples = 0;
 
     int32_t bias_mag_x = 0;
-    int32_t bias_mag_y  = 0;
+    int32_t bias_mag_y = 0;
     int32_t bias_mag_z = 0;
     int32_t bias_gyro_x = 0;
-    int32_t bias_gyro_y  = 0;
+    int32_t bias_gyro_y = 0;
     int32_t bias_gyro_z = 0;
     int32_t bias_accel_x = 0;
-    int32_t bias_accel_y  = 0;
+    int32_t bias_accel_y = 0;
     int32_t bias_accel_z = 0;
     while (samples < sample_count)
     {
@@ -85,44 +85,49 @@ int main(int argc, char **argv)
                packet.gyro_x, packet.gyro_y, packet.gyro_z,
                packet.accel_x, packet.accel_y, packet.accel_z);
 
-        if (samples < average_samples)
+        if (average_samples < average_count)
         {
-            bias_mag_x   += packet.mag_x;
-            bias_mag_y   += packet.mag_y;
-            bias_mag_z   += packet.mag_z;
-            bias_gyro_x  += packet.gyro_x;
-            bias_gyro_y  += packet.gyro_y;
-            bias_gyro_z  += packet.gyro_z;
+            bias_mag_x += packet.mag_x;
+            bias_mag_y += packet.mag_y;
+            bias_mag_z += packet.mag_z;
+            bias_gyro_x += packet.gyro_x;
+            bias_gyro_y += packet.gyro_y;
+            bias_gyro_z += packet.gyro_z;
             bias_accel_x += packet.accel_x;
             bias_accel_y += packet.accel_y;
             bias_accel_z += packet.accel_z;
+            average_samples++;
+            if (average_samples == average_count)
+            {
+                bias_mag_x /= average_count;
+                bias_mag_y /= average_count;
+                bias_mag_z /= average_count;
+                bias_gyro_x /= average_count;
+                bias_gyro_y /= average_count;
+                bias_gyro_z /= average_count;
+                bias_accel_x /= average_count;
+                bias_accel_y /= average_count;
+                bias_accel_z /= average_count;
+                fprintf(output, "%f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+                        0.0f,
+                        bias_mag_x, bias_mag_y, bias_mag_z,
+                        bias_gyro_x, bias_gyro_y, bias_gyro_z,
+                        bias_accel_x, bias_accel_y, bias_accel_z);
+            }
         }
         else
         {
-            if (samples == average_samples)
-            {
-                bias_mag_x /= average_samples;
-                bias_mag_y /= average_samples;
-                bias_mag_z /= average_samples;
-                bias_gyro_x /= average_samples;
-                bias_gyro_y /= average_samples;
-                bias_gyro_z /= average_samples;
-                bias_accel_x /= average_samples;
-                bias_accel_y /= average_samples;
-                bias_accel_z /= average_samples;
-            }
             float t = samples * (float)(sleep_time) / 1000.0f;
             fprintf(output, "%f\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n", t,
                     packet.mag_x, packet.mag_y, packet.mag_z,
                     packet.gyro_x, packet.gyro_y, packet.gyro_z,
                     packet.accel_x, packet.accel_y, packet.accel_z);
+            samples++;
         }
 
-        samples++;
         Sleep(sleep_time);
     }
 
-    printf("Sampling done\n");
     printf("mag bias:\t%d\t%d\t%d\n",
            bias_mag_x, bias_mag_y, bias_mag_z);
     printf("gyro bias:\t%d\t%d\t%d\n",

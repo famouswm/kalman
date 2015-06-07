@@ -1,4 +1,7 @@
 format
+first line
+    time bias_mag_xyz bias_gyro_xyz bias_accel_xyz
+remaining lines
     time mag_x mag_y mag_z gyro_x gyro_y gyro_z accel_x accel_y accel_z
 
 magnetometer
